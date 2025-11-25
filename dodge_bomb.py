@@ -2,7 +2,7 @@ import os
 import sys
 import pygame as pg
 import random
-
+import time #演習課題1　pg.time.wait を使うため
 
 WIDTH, HEIGHT = 1100, 650
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
@@ -13,15 +13,41 @@ def check_bound(obj_rct: pg.Rect, obj_sum_mv: tuple) -> tuple[bool, bool]:
     
     yoko, tate = True, True
     
-    # 横方向 (X軸) の判定
     if obj_rct.left + obj_sum_mv[0] < 0 or WIDTH < obj_rct.right + obj_sum_mv[0]:
         yoko = False
     
-    # 縦方向 (Y軸) の判定
     if obj_rct.top + obj_sum_mv[1] < 0 or HEIGHT < obj_rct.bottom + obj_sum_mv[1]:
         tate = False
     
     return yoko, tate
+
+#演習課題1: ゲームオーバー画面関数の定義
+def game_over(screen: pg.Surface):
+    
+    # 1. 半透明のSurface作成
+    over_surface = pg.Surface((WIDTH, HEIGHT))
+    # 半透明の黒にするため、透過度を設定し黒で塗りつぶす
+    over_surface.set_alpha(150)           
+    over_surface.fill((0, 0, 0))          
+    
+    # 2. Game Overテキストの準備
+    font = pg.font.Font(None, 80)
+    text = font.render("Game Over", True, (255, 255, 255))
+    text_rct = text.get_rect(center=(WIDTH/2, HEIGHT/2 - 50))
+    
+    # 3. 泣いているこうかとん
+    kk_img_cry = pg.transform.rotozoom(pg.image.load("fig/8.png"), 0, 2.0)
+    kk_rct_cry = kk_img_cry.get_rect(center=(WIDTH/2, HEIGHT/2 + 50))
+    
+    # 4. 画面への描画と更新
+    screen.blit(over_surface, (0, 0))  
+    screen.blit(text, text_rct)        
+    screen.blit(kk_img_cry, kk_rct_cry) 
+    pg.display.update()
+    
+    #3秒間停止
+    pg.time.wait(3000)
+
 
 
 def main():
@@ -86,6 +112,8 @@ def main():
         
         # 練習問題4: 衝突判定
         if kk_rct.colliderect(bb_rct):
+            #game overの表示
+            game_over(screen)
             return 
         
         pg.display.update()
