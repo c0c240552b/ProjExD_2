@@ -53,13 +53,13 @@ def init_bb_imgs() -> list[tuple[pg.Surface, int]]:
     
     bb_imgs = []
     # (半径, 速度) のリスト
-    params = [(10, 5), (20, 8), (30, 11), (40, 14), (50, 17), (60, 20)] 
+    params = [(10,5), (15,8), (20,11), (25,14), (30,17), (35,20),(40,23),(45,26),(50,29),(55,32)] 
     
     for r, v in params:
-        bb_img = pg.Surface((2*r, 2*r))
-        pg.draw.circle(bb_img, (255, 0, 0), (r, r), r)
-        bb_img.set_colorkey((0, 0, 0))
-        bb_imgs.append((bb_img, v)) 
+        bb_img = pg.Surface((2*r, 2*r))#爆弾作成
+        pg.draw.circle(bb_img, (255, 0, 0), (r, r), r)#赤玉の描画
+        bb_img.set_colorkey((0, 0, 0))#透過色設定
+        bb_imgs.append((bb_img, v)) #リスト追加
     
     return bb_imgs
 
@@ -77,9 +77,9 @@ def main():
     bb_img, speed = bb_img_params[0] 
     vx, vy = speed, speed
 
-    bb_rct = bb_img.get_rect()
-    bb_rct.centerx = random.randint(0, WIDTH)
-    bb_rct.centery = random.randint(0, HEIGHT)
+    bb_rct = bb_img.get_rect()#最初の爆弾
+    bb_rct.centerx = random.randint(0, WIDTH)#画面の幅ランダム
+    bb_rct.centery = random.randint(0, HEIGHT)#画面の高さランダム
     
     DELTA = {
         pg.K_UP: (0, -5),
@@ -115,7 +115,7 @@ def main():
         screen.blit(kk_img, kk_rct)
 
         #演習課題2: 時間経過による爆弾の拡大と加速
-        level = min(tmr // 500, len(bb_img_params) - 1)
+        level = min(tmr // 500, len(bb_img_params) - 1)#tmr÷500の商をレベルとする
         bb_img_new, speed_new = bb_img_params[level]
         
         # 画像または速度が変更されたかチェックし、更新
@@ -123,7 +123,7 @@ def main():
             bb_img = bb_img_new
             speed = speed_new
             
-            # 速度を更新（向きは変えない）
+            # 速度の更新（向きは変えない）
             vx = speed if vx > 0 else -speed
             vy = speed if vy > 0 else -vy
             
