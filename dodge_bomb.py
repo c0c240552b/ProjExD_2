@@ -10,7 +10,16 @@ os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
 #練習問題3: check_bound 関数の定義 (型ヒントとdocstring付き)
 def check_bound(obj_rct: pg.Rect, obj_sum_mv: tuple) -> tuple[bool, bool]:
-    
+    #　↓　改善箇所：docstringを追加する
+    """
+    オブジェクトが画面外に出るか出ないかを判定する関数。
+    引数1: オブジェクトのRect (obj_rct)
+    引数2: オブジェクトの合計移動量タプル (obj_sum_mv)
+    戻り値: (横方向の画面内判定結果, 縦方向の画面内判定結果)
+           True: 画面内に留まる, False: 画面外に出る/出た
+    """
+
+
     yoko, tate = True, True
     
     if obj_rct.left + obj_sum_mv[0] < 0 or WIDTH < obj_rct.right + obj_sum_mv[0]:
